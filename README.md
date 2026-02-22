@@ -40,24 +40,25 @@ AB-Engine is a lightweight, production-style A/B testing engine that automates t
 
 ```mermaid
 flowchart TD
-    A(YAML Config<br/>'12% baseline, 5% lift') --> B["`main.py`<br/>'Hey, run this test!'"]
+    A["Load YAML Config<br/>12% baseline, 5% lift target"] --> B["main.py kicks off the experiment"]
     
-    B --> C["Simulator<br/>'Generate 10K fake users<br/>who click or don't'"]
-    B --> D["Randomizer<br/>'User #123 → Group A<br/>User #456 → Group B'"]
+    B --> C["Generate 10K fake users<br/>Some convert, some don't"]
+    B --> D["Assign A or B to each user<br/>Using consistent hashing"]
     
-    C --> E["Dataset<br/>user_id, variant, converted"]
+    C --> E["Raw experiment data ready<br/>user_id, variant, converted"]
     D --> E
     
-    E --> F["Stats Engine<br/>'Is 13.2% vs 17.9%<br/>actually different?'"]
-    E --> G["Guardrails<br/>'Did latency blow up?'"]
+    E --> F["Run Z-test on conversions<br/>13.2% vs 17.9% significant?"]
+    E --> G["Check guardrails<br/>Latency still OK?"]
     
-    F --> H["Final Call<br/>'✅ SHIP<br/>or ⚠️ HOLD?'"]
+    F --> H["Make the call:<br/>✅ SHIP or ⚠️ HOLD?"]
     G --> H
     
-    H --> I["Chart + Report<br/>'Show PMs the win'"]
-    H --> J["Console<br/>'Here's what to do next'"]
+    H --> I["Save bar chart for PMs<br/>data/simulated/results_chart.png"]
+    H --> J["Print decision to console"]
     
     style A fill:#e1f5fe
+    style B fill:#f3e5f5
     style H fill:#c8e6c9
     style I fill:#fff3e0
 ```
