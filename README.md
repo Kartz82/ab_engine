@@ -57,13 +57,16 @@ flowchart TD
     H --> I["Save bar chart for PMs<br/>data/simulated/results_chart.png"]
     H --> J["Print decision to console"]
     
-    %% Professional Google-inspired palette
-    style A fill:#e8f0fe
-    style B fill:#f1f8e9  
-    style H fill:#e8f5e8
-    style I fill:#fff8e1
-    style F fill:#fce4ec
-    style G fill:#e3f2fd
+    %% Dark professional palette with white text contrast
+    style A fill:#1e3a8a, color:#ffffff
+    style B fill:#1f2937, color:#ffffff
+    style H fill:#166534, color:#ffffff
+    style I fill:#7c2d12, color:#ffffff
+    style F fill:#4c1d95, color:#ffffff
+    style G fill:#1e40af, color:#ffffff
+    style C fill:#374151, color:#ffffff
+    style D fill:#374151, color:#ffffff
+    style E fill:#4b5563, color:#ffffff
 ```
 
 ## Experiment Configuration
