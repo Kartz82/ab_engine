@@ -1,13 +1,13 @@
-import pandas as pd
-import numpy as np
-from src.engine.stats import ExperimentStats
-from src.engine.randomization import Randomizer
+import yaml
 
-# 1. SETUP: Configure the Experiment
-EXP_ID = "google_ads_conversion_test_2026"
-BASELINE_CONVERSION = 0.12  # 12% baseline
-EXPECTED_LIFT = 0.10        # We expect a 10% relative lift (to 13.2%)
-N_USERS = 5000              # Total users to simulate
+# Load settings from config/experiment_config.yaml
+with open("config/experiment_config.yaml", "r") as f:
+    config_data = yaml.safe_load(f)
+
+EXP_ID = config_data['experiment_name']
+BASELINE_CONVERSION = config_data['parameters']['baseline_value']
+EXPECTED_LIFT = config_data['parameters']['mde']
+N_USERS = 5000 # We can also move this to YAML
 
 # 2. SIMULATION: Generate Data
 print(f"🚀 Running Simulation for {EXP_ID}...")
@@ -17,7 +17,7 @@ for i in range(N_USERS):
     variant = Randomizer.get_variant(user_id, EXP_ID)
     
     # Simulate different conversion rates for A and B
-    prob = BASELINE_CONVERSION * 1.12 if variant == "B" else BASELINE_CONVERSION
+    prob = BASELINE_CONVERSION * (1 + EXPECTED_LIFT) if variant == "B" else BASELINE_CONVERSION
     converted = np.random.binomial(1, prob)
     
     data.append({"user_id": user_id, "variant": variant, "converted": converted})
@@ -44,3 +44,12 @@ print(f"Relative Lift:       {results['lift']*100:.2f}%")
 print(f"Statistical Sig:     {results['significant']}")
 print(f"P-Value:             {results['p_value']}")
 print("="*30)
+
+# 5. SAFETY CHECK (The Google gTech Way)
+# Let's pretend we also tracked "Page Load Latency"
+# If latency increases significantly, we shouldn't ship even if conversions are up.
+simulated_latency_impact = {"significant": False, "lift": 0.01} # 1% slower
+
+final_decision = stats_engine.get_decision(results, [simulated_latency_impact])
+
+print(f"Final Product Recommendation: {final_decision}")
