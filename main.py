@@ -58,3 +58,6 @@ simulated_latency_impact = {"significant": False, "lift": 0.01} # 1% slower
 final_decision = stats_engine.get_decision(results, [simulated_latency_impact])
 
 print(f"Final Product Recommendation: {final_decision}")
+
+# 6. VISUALIZATION
+stats_engine.visualize_results(results, "data/simulated/results_chart.png")

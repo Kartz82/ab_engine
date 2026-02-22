@@ -57,3 +57,24 @@ class ExperimentStats:
             return "✅ SHIP: Statistically Significant Gain"
         
         return "⚠️ INCONCLUSIVE: Keep A / Collect More Data"
+    @staticmethod
+    def visualize_results(results: Dict, output_path: str = "experiment_plot.png"):
+        """Generates and saves a bar chart comparing Group A and Group B conversion rates."""
+        import matplotlib.pyplot as plt
+        
+        labels = ['Control (A)', 'Treatment (B)']
+        rates = [results['p_a'] * 100, results['p_b'] * 100]
+        
+        plt.figure(figsize=(8, 6))
+        bars = plt.bar(labels, rates, color=['#9aa0a6', '#4285F4']) # Google Colors
+        plt.ylabel('Conversion Rate (%)')
+        plt.title('A/B Test Results: Conversion by Group')
+        
+        # Add labels on top of bars
+        for bar in bars:
+            yval = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2, yval + 0.1, f"{yval:.2f}%", ha='center', va='bottom', fontweight='bold')
+            
+        plt.savefig(output_path)
+        print(f"📊 Chart saved to {output_path}")
+        plt.close()
