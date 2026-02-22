@@ -1,0 +1,11 @@
+experiment_name: "landing_page_v2"
+primary_metric: "conversion_rate"
+metric_type: "proportion"
+parameters:
+  baseline_value: 0.15
+  mde: 0.05
+  alpha: 0.05
+  power: 0.80
+guardrails:
+  - "latency_ms"
+  - "bounce_rate"
