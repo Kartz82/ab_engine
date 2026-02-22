@@ -39,25 +39,27 @@ AB-Engine is a lightweight, production-style A/B testing engine that automates t
 ## Architecture
 
 ```mermaid
-flowchart LR
-    A[experiment_config.yaml] --> B[main.py]
-
-    B --> C[Simulator<br/>src/engine/simulator.py]
-    B --> D[Randomizer<br/>src/engine/randomization.py]
-    B --> E[Stats Engine<br/>src/engine/stats.py]
-    B --> F[Guardrail Logic]
-
-    C --> G[(Simulated Data<br/>data/simulated/*.csv)]
-    D --> G
-
-    G --> E
-    G --> F
-
-    E --> H[Decision + Stats Summary]
-    F --> H
-
-    H --> I[Visual Report<br/>results_chart.png]
-    H --> J[Console/Log Output]
+flowchart TD
+    A(YAML Config<br/>'12% baseline, 5% lift') --> B["`main.py`<br/>'Hey, run this test!'"]
+    
+    B --> C["Simulator<br/>'Generate 10K fake users<br/>who click or don't'"]
+    B --> D["Randomizer<br/>'User #123 → Group A<br/>User #456 → Group B'"]
+    
+    C --> E["Dataset<br/>user_id, variant, converted"]
+    D --> E
+    
+    E --> F["Stats Engine<br/>'Is 13.2% vs 17.9%<br/>actually different?'"]
+    E --> G["Guardrails<br/>'Did latency blow up?'"]
+    
+    F --> H["Final Call<br/>'✅ SHIP<br/>or ⚠️ HOLD?'"]
+    G --> H
+    
+    H --> I["Chart + Report<br/>'Show PMs the win'"]
+    H --> J["Console<br/>'Here's what to do next'"]
+    
+    style A fill:#e1f5fe
+    style H fill:#c8e6c9
+    style I fill:#fff3e0
 ```
 
 ## Experiment Configuration
